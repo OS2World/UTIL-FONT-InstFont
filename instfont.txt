@@ -1,0 +1,86 @@
+INSTFONT V1.0
+(C) 2010 Alex Taylor
+
+  INSTFONT is a simple command-line tool for installing a font under OS/2
+  Presentation Manager.
+
+  This program was written in order to facilitate automated font install
+  packages.  While it is possible to install a font using REXX alone by
+  setting the appropriate entries in OS2.INI, this technique requires a
+  reboot in order to take effect.  (This is because the INI keys are only
+  read at PM initialization.  In order to install a font on demand, the
+  GPI function GpiLoadPublicFonts() must be called to register the font,
+  and this API is not accessible from REXX.  INSTFONT does this for you.)
+
+  Usage is simple:
+     instfont <font-filename>
+
+  INSTFONT uses a Unix-like feedback philosophy: if the font is installed
+  successfully, the program will return silently.  Messages are displayed
+  only if an error occurs.
+
+  Possible error conditions:
+
+    "Failed to register font: GpiLoadPublicFonts() failed."
+     - This generally indicates that the specified file was not a valid
+       or recognized font file, or else could not be found at all.
+
+    "Failed to register font: PrfWriteProfileString() failed."
+     - This indicates that the required entries could not be written to
+       OS2.INI for some reason.  (I am not aware of what circumstances
+       might cause this to occur.)
+
+  INSTFONT returns a boolean value: TRUE (1) on success, or FALSE (0) on
+  failure.
+
+
+Remarks
+
+  * The font will be registered FROM ITS CURRENT LOCATION ON DISK.  For
+    example, if you run "instfont d:\temp\mynewfont.ttf", then the font will
+    be installed as D:\TEMP\MYNEWFONT.TTF (and so you had better not delete
+    the font from D:\TEMP later, if you want to keep using it).
+
+    If you prefer all installed fonts to be located in a common directory
+    (e.g. ?:\PSFONTS), it is your responsibility to move the file there
+    BEFORE running INSTFONT.
+
+  * INSTFONT should work with any font format that is supported by OS/2,
+    including bitmap (.FON), Type 1 (.PFM/.OFM), or TrueType (.TTF).
+
+  * Newly-installed fonts might not show up in the XWorkplace Font Folder
+    if the latter was previously opened since the last reboot.  The font
+    will, however, be available to applications, and can be viewed in the
+    Font Palette.
+
+  * You should not attempt to use a newly-installed font in any application
+    that uses the Innotek Font Engine until you have rebooted the system.
+    (This is a documented limitation of the Innotek Font Engine.)
+
+
+Notices
+
+  INSTFONT is (C) 2010 Alex Taylor.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+   3. The name of the author may not be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
+
